@@ -1,0 +1,27 @@
+extends layout
+
+block content
+  h1= title
+  form(action="" method='POST')
+    .form_item
+      label(for="first_name") First Name
+      input(type="text" name="first_name")
+    .form_item
+      label(for="last_name") Last Name 
+      input(type="text" name="last_name")
+    .form_item
+      label(for="email") Email 
+      input(type="email" name="email")
+    .form_item
+      label(for="password") Password
+      input(type="password" name="password")   
+    .form_item
+      label(for="confirm-password") Confirm Password
+      input(type="password" name="confirm-password")  
+    button(type="submit") Sign up
+  p Already have an account? #[a(href="/sign-in") Sign in]
+  if errors
+   ul
+    for error in errors
+     li!= error.msg
+

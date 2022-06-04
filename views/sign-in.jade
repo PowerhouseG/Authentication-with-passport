@@ -1,0 +1,17 @@
+extends layout
+
+block content
+  h1= title
+  form(action="" method='POST')
+    .form_item
+      label(for="username") Username
+      input(type="text" name="username")
+    .form_item
+      label(for="password") Password
+      input(type="password" name="password") 
+    button(type="submit") Sign in
+  p Don't have an account? #[a(href="/sign-up") Sign up]
+  if errors
+   ul
+    for error in errors
+     li!= error.msg

@@ -1,0 +1,26 @@
+extends layout
+
+block content
+  if currentUser===undefined 
+    h1 Logged out! 
+    p Sign-in? #[a(href="/sign-in") Sign in]
+  else
+     .menu
+      .item 
+        a(href="/messages") Messages
+      .item 
+        a(href='/join') Join 
+     if success
+       h1=(success==='fail'?"Failure":'Success')
+     form(action="" method='POST')
+      .form_item 
+        label(for="join") Join The Club 
+        input#join(type="text", name="join" value=(join===undefined?'':join))
+      .form_item 
+        label(for="admin") Become An Admin 
+        input#admin(type="text", name="admin" value=(admin===undefined?'':admin))
+      button(type="submit") Submit
+      if errors
+        ul
+          for error in errors
+           li!= error.msg

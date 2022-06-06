@@ -2,18 +2,27 @@ extends layout
 
 block content
   if currentUser===undefined 
-    h1 Automatically logged out! 
+    h1 Logged out! 
+    p Sign-in? #[a(href="/sign-in") Sign in]
   else
+    .menu
+      .item 
+        a(href="/messages") Messages
+      .item 
+        a(href='/join') Join 
     h1="WELCOME BACK "+ currentUser.username
     a(href="/log-out")="LOG OUT"
     if messages
       for message in messages
         .message
           .username-time 
-            .username=message.user.username
-            .time=message.time
+            .username=(currentUser.status==="Unverified"?"Anonymous":message.user.username)
+            .time=(currentUser.status==="Unverified"?"":message.time)
           .title=message.title
           .content=message.message
+          if(currentUser.status==="Admin")
+            form(action='/messages/'+message._id method="POST")
+              button(type="submit") Delete
     form(action="" method='POST')
       .form_item 
         label(for="title") Title 

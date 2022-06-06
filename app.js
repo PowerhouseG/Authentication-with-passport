@@ -8,11 +8,16 @@ const passport = require("passport");
 const LocalStrategy = require("passport-local").Strategy;
 const mongoose = require("mongoose");
 var User = require("./models/user");
+const bcrypt=require('bcryptjs');
+require('dotenv').config();
+var compression = require('compression');
+var helmet = require('helmet');
+
 
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
-const mongoDb = "mongodb+srv://mongoDb:mongoDb-pass@cluster0.ss9to.mongodb.net/test1?retryWrites=true&w=majority";
+const mongoDb = process.env.DB_HOST;
 mongoose.connect(mongoDb, { useUnifiedTopology: true, useNewUrlParser: true });
 const db = mongoose.connection;
 db.on("error", console.error.bind(console, "mongo connection error"));
@@ -35,10 +40,15 @@ passport.use(
       if (!user) {
         return done(null, false, { message: "Incorrect username" });
       }
-      if (user.password !== password) {
-        return done(null, false, { message: "Incorrect password" });
-      }
-      return done(null, user);
+      bcrypt.compare(password, user.password, (err, res) => {
+        if (res) {
+          // passwords match! log user in
+          return done(null, user);
+        } else {
+          // passwords do not match!
+          return done(null, false, { message: "Incorrect password" });
+        }
+      });
     });
   })
 );
@@ -56,6 +66,8 @@ passport.deserializeUser(function(id, done) {
 app.use(session({ secret: "cats", resave: false, saveUninitialized: true }));
 app.use(passport.initialize());
 app.use(passport.session());
+app.use(compression()); //Compress all routes
+app.use(helmet());
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));

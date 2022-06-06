@@ -169,10 +169,10 @@ router.post("/join", [
       return;
     } else {
       let success = "fail";
-      if (req.body.join == "join") {
+      if (req.body.join == process.env.VERIFIED) {
         success = "Verified";
       }
-      if (req.body.admin == "admin") {
+      if (req.body.admin == process.env.ADMIN) {
         success = "Admin";
       }
       if (success !== "fail") {

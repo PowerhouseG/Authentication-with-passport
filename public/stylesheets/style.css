@@ -12,3 +12,29 @@ a {
   width: 200px;
   margin-bottom: 20px;
 }
+.username{
+  display: inline-block;
+}
+.time{
+  display: inline-block;
+}
+.username-time{
+  display: flex;
+  justify-content: space-between;
+  border: 1px solid gray;
+}
+.message{
+  width: 700px;
+  margin-bottom: 10px;
+}
+.content{
+  border: 1px solid gray;
+  border-top-width: 0px;
+}
+#message{
+  width: 500px;
+}
+.title{
+  border: 1px solid gray;
+  border-top-width: 0px;
+}

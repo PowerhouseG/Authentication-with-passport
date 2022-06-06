@@ -1,5 +1,30 @@
 extends layout
 
 block content
-  h1="WELCOME BACK "+ currentUser.username
-  a(href="/log-out")="LOG OUT"
+  if currentUser===undefined 
+    h1 Automatically logged out! 
+  else
+    h1="WELCOME BACK "+ currentUser.username
+    a(href="/log-out")="LOG OUT"
+    if messages
+      for message in messages
+        .message
+          .username-time 
+            .username=message.user.username
+            .time=message.time
+          .title=message.title
+          .content=message.message
+    form(action="" method='POST')
+      .form_item 
+        label(for="title") Title 
+        input#title(type="text", name="title" value=(message_title===undefined?'':message_title))
+      .form_item
+        label(for="message") Message
+        textarea#message(name="message", cols="20", rows="10")=(message_content===undefined?'':message_content)   
+      .form_item 
+        input(type="hidden", name="user_id" value=currentUser._id) 
+        button(type="submit") Submit Message
+    if errors
+      ul
+        for error in errors
+          li!= error.msg
